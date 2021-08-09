@@ -1,4 +1,4 @@
-name: Deployment pipeline
+name: Testing pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  backend-pipeline:
+  testing-pipeline:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -15,9 +15,17 @@ jobs:
           node-version: '12.x'
       - name: npm install
         run: cd backend && npm install
-      - name: test
+      - name: test backend
         env:
           MONGODB_URI: ${{secrets.MONGODB_URI}}
           TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
           SECRET: ${{secrets.SECRET}}
         run: cd backend && npm run test
+      - name: lint
+        run: cd frontend && npm run eslint
+      - name: e2e test
+        uses: cypress-io/github-action@v2
+        with:
+          command: cd frontend && npm run test:e2e
+          start: cd backend && npm run start:test && cd frontend && npm run start
+          wait-on: http://localhost:3000
