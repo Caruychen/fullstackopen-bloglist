@@ -20,4 +20,4 @@ jobs:
           MONGODB_URI: ${{secrets.MONGODB_URI}}
           TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
           SECRET: ${{secrets.SECRET}}
-        run: cd backent && npm run test
+        run: cd backend && npm run test
