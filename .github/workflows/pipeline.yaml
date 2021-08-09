@@ -15,9 +15,9 @@ jobs:
           node-version: '12.x'
       - name: npm install
         run: cd backend && npm install
-#      - name: test
-#        run: cd backend && npm run test
-      - name: environments
+      - name: test
         env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI}}
-        run: echo "$MONGODB_URI"
+          MONGODB_URI: ${{secrets.MONGODB_URI}}
+          TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
+          SECRET: ${{secrets.SECRET}}
+        run: cd backent && npm run test
