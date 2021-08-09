@@ -14,9 +14,11 @@ jobs:
         with:
           node-version: '12.x'
       - name: npm install backend
-        run: cd backend && npm install
+        working-directory: ./backend
+        run: npm install
       - name: npm install frontend
-        run: cd frontend && npm install
+        working-directory: ./frontend
+        run: npm install
       - name: test backend
         env:
           MONGODB_URI: ${{secrets.MONGODB_URI}}
