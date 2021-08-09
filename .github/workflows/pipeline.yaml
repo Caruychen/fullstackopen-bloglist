@@ -27,13 +27,13 @@ jobs:
         working-directory: ./frontend
         run: npm run eslint
       - name: e2e test
-        uses: cypress-io/github-action@v2  
+        uses: cypress-io/github-action@v2
+        env:
+          MONGODB_URI: ${{secrets.MONGODB_URI}}
+          TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
+          SECRET: ${{secrets.SECRET}}
         with:
           working-directory: ./frontend
           command: npm run test:e2e
           start: npm run start:e2e, npm run start:testserver
           wait-on: 'http://localhost:3000, http://localhost:3001'
-          env:
-            MONGODB_URI: ${{secrets.MONGODB_URI}}
-            TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
-            SECRET: ${{secrets.SECRET}}
