@@ -24,10 +24,10 @@ jobs:
           SECRET: ${{secrets.SECRET}}
         run: cd backend && npm run test
       - name: lint
-        run: cd frontend && npm run eslint
+        working-directory: ./frontend
+        run: npm run eslint
       - name: e2e test
         uses: cypress-io/github-action@v2  
-        working-directory: ./frontend
         with:
           command: cd frontend && npm run test:e2e
           start: cd backend && npm run start:test && cd frontend && npm run start
