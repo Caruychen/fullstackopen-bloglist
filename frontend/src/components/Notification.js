@@ -9,7 +9,7 @@ const Notification = () => {
     <Snackbar open={message !== null} autoHideDuration={5000}>
       {
         message &&
-        <Alert severity={message.status}>
+        <Alert severity={message.status} id="notification">
           {message.text}
         </Alert>
       }

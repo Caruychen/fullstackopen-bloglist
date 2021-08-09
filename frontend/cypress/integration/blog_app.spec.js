@@ -30,10 +30,8 @@ describe('Blog app', function () {
       cy.get('#username').type('testuser')
       cy.get('#password').type('wrong')
       cy.get('#login-button').click()
-      cy.get('.error')
+      cy.get('#notification')
         .should('contain', 'invalid username or password')
-        .and('have.css', 'color', 'rgb(255, 0, 0)')
-        .and('have.css', 'border-style', 'solid')
 
       cy.get('html').should('not.contain', 'logged in as')
     })
@@ -58,7 +56,8 @@ describe('Blog app', function () {
       cy.get('#create-blog-button').click()
 
       cy.contains(`a new blog ${blog.title} by ${blog.author} added`)
-      cy.contains(`${blog.title} ${blog.author}`)
+      cy.contains(`${blog.title}`)
+      cy.contains(`${blog.author}`)
     })
 
     describe('and a blog exists', function () {
@@ -67,7 +66,7 @@ describe('Blog app', function () {
       })
 
       it('liking a blog correctly updates the like count', function () {
-        cy.contains(`${blog.title} ${blog.author}`).click()
+        cy.contains(`${blog.title}`).click()
 
         cy.contains('like').parent().as('likes')
         cy.get('@likes').contains('0')
@@ -76,7 +75,7 @@ describe('Blog app', function () {
       })
 
       it('the user who created the blog can delete it', function () {
-        cy.contains(`${blog.title} ${blog.author}`).click()
+        cy.contains(`${blog.title}`).click()
         cy.contains('remove').click()
         cy.get('html').should('not.contain', `${blog.title} ${blog.author}`)
       })
@@ -86,13 +85,13 @@ describe('Blog app', function () {
         cy.logout()
         cy.login({ username: 'otheruser', password: 'secret' })
 
-        cy.contains(`${blog.title} ${blog.author}`).click()
+        cy.contains(`${blog.title}`).click()
         cy.get('html').should('not.contain', 'remove')
       })
 
       it('the user can comment on the blog', function () {
         const comment = 'superb article!'
-        cy.contains(`${blog.title} ${blog.author}`).click()
+        cy.contains(`${blog.title}`).click()
         cy.get('#comment-input').type(comment)
         cy.get('#add-comment-button').click()
         cy.contains(comment)
@@ -110,7 +109,7 @@ describe('Blog app', function () {
         let prevValue = null
         cy.get('.blogItem')
           .each(($blog, index) => {
-            cy.get('.blogItem > .blogLink').eq(index).click()
+            cy.get('.blogLink').eq(index).click()
             cy.get('.blogLikes').then($div => {
               const currValue = Number($div[0].childNodes[0].nodeValue)
               prevValue && expect(currValue).to.be.at.most(prevValue)
