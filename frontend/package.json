@@ -24,7 +24,8 @@
     "eslint": "eslint .",
     "cypress:open": "cypress open",
     "test:e2e": "cypress run -- --spec 'cypress/integration/blog_app.spec.js'",
-    "start:e2e": "npm run start && cd ../backend && npm run start:test"
+    "start:e2e": "npm run start",
+    "start:testserver": "cd ../backend && npm run start:test"
   },
   "eslintConfig": {
     "extends": "react-app"
