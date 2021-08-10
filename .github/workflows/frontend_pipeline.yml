@@ -1,12 +1,15 @@
-name: Testing pipeline
+name: Frontend pipeline
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
 
 jobs:
-  testing-pipeline:
+  test-frontend:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -19,12 +22,6 @@ jobs:
       - name: npm install frontend
         working-directory: ./frontend
         run: npm install
-      - name: test backend
-        env:
-          MONGODB_URI: ${{secrets.MONGODB_URI}}
-          TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
-          SECRET: ${{secrets.SECRET}}
-        run: cd backend && npm run test
       - name: lint
         working-directory: ./frontend
         run: npm run eslint
